@@ -1,11 +1,12 @@
 package com.driver.services;
 
-import com.driver.models.*;
-import com.driver.repositories.*;
+import com.driver.models.Blog;
+import com.driver.models.Image;
+import com.driver.repositories.BlogRepository;
+import com.driver.repositories.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,17 +19,13 @@ public class ImageService {
 
     public Image addImage(Integer blogId, String description, String dimensions){
         //add an image to the blog
+        Blog blog = blogRepository2.findById(blogId).orElse(null);
         Image image = new Image();
         image.setDescription(description);
         image.setDimensions(dimensions);
-
-        Optional<Blog> optionalBlog = blogRepository2.findById(blogId);
-        if(optionalBlog.isPresent()) {
-            Blog blog = optionalBlog.get();
-            image.setBlog(blog);
-            blog.getImageList().add(image);
-            blogRepository2.save(blog);
-        }
+        image.setBlog(blog);
+        blog.getImageList().add(image);
+        blogRepository2.save(blog);
         return image;
     }
 

@@ -1,12 +1,10 @@
 package com.driver.services;
 
-import com.driver.models.*;
+import com.driver.models.User;
 import com.driver.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,8 +18,8 @@ public class UserService {
         user.setPassword(password);
         user.setFirstName("test");
         user.setLastName("test");
-
         userRepository3.save(user);
+        return user;
     }
 
     public void deleteUser(int userId){
@@ -29,14 +27,9 @@ public class UserService {
     }
 
     public User updateUser(Integer id, String password){
-        Optional<User> optionalUser = userRepository3.findById(id);
-        User user = null;
-
-        if(optionalUser.isPresent()) {
-            user = optionalUser.get();
-            user.setPassword(password);
-            userRepository3.save(user);
-        }
+        User user = userRepository3.findById(id).orElse(null);
+        user.setPassword(password);
+        userRepository3.save(user);
         return user;
     }
 }
